@@ -3,18 +3,19 @@ package com.example.douglas.myfridgeapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.example.douglas.myfridgeapp.adapter.FridgeListAdapter;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
+import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
             return true;
         }
 
+        if (id == R.id.menu_refresh) {
+            ApiClient.getServices().getAllItems().enqueue(this);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -97,3 +102,5 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         t.printStackTrace();
     }
 }
+
+
