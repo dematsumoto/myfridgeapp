@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.douglas.myfridgeapp.adapter.FridgeListAdapter;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
 
 import java.util.List;
@@ -36,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ApiClient.getServices().getAllItems().enqueue(this);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
                         .setAction("Action", null).show();
             }
         });
+
+        ApiClient.getServices().getAllItems().enqueue(this);
     }
 
     @Override
@@ -76,12 +77,6 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
                 .map(FridgeItem::getName)
                 .collect(Collectors.toList());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, itemNameList);
-
-        ListView listView = (ListView) findViewById(R.id.itemList);
-        listView.setAdapter(adapter);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
@@ -92,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-//        mAdapter = new MyAdapter(myDataset);
-//        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new FridgeListAdapter(itemNameList);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
