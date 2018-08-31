@@ -5,10 +5,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String HOST = "http://192.168.0.104";
-    private static final String PORT = "8080";
-    //private static final String BASE_URL = HOST + ":" + PORT;
-
     private static final String BASE_URL = "https://fridge-tracker-d.herokuapp.com";
 
     public static FridgeapiService fridgeapiService;
