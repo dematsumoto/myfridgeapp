@@ -1,5 +1,6 @@
 package com.example.douglas.myfridgeapp;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,12 +36,12 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(),AddNewItemActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getBaseContext(), AddNewItemActivity.class);
+                startActivity(intent,  ActivityOptions.makeBasic().toBundle());
             }
         });
 
@@ -56,19 +57,15 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         if (id == R.id.menu_refresh) {
+            findViewById(R.id.progress_loader).setVisibility(View.VISIBLE);
             ApiClient.getServices().getAllItems().enqueue(this);
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -76,11 +73,13 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
 
     @Override
     public void onResponse(Call<List<FridgeItem>> call, Response<List<FridgeItem>> response) {
+        findViewById(R.id.progress_loader).setVisibility(View.GONE);
+
         List<String> itemNameList= response.body().stream()
                 .map(FridgeItem::getName)
                 .collect(Collectors.toList());
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
