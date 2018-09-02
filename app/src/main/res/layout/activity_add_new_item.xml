@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:ems="10"
         android:hint="@string/name_input"
         android:inputType="textPersonName"
@@ -38,6 +38,7 @@
         android:layout_height="96dp"
         android:layout_marginTop="108dp"
         android:backgroundTint="@android:color/holo_green_light"
+        android:onClick="showSubmitionToast"
         android:text="@string/add_to_fridge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,30 +49,30 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="@android:color/holo_blue_light"
         android:contentDescription="@string/date_picker"
         android:onClick="showDatePickerDialog"
         android:src="@android:drawable/ic_menu_my_calendar"
         app:layout_constraintStart_toEndOf="@+id/start_date_field"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
     <EditText
         android:id="@+id/editText2"
         android:layout_width="79dp"
         android:layout_height="64dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="48dp"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/number_of_days_hint"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/valid_for_text"
-        app:layout_constraintTop_toBottomOf="@+id/calendar_start_ic" />
+        app:layout_constraintTop_toBottomOf="@+id/start_date_field" />
 
     <TextView
         android:id="@+id/valid_for_text"
-        android:layout_width="176dp"
+        android:layout_width="98dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
@@ -85,7 +86,7 @@
         android:id="@+id/days"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="@string/days"
