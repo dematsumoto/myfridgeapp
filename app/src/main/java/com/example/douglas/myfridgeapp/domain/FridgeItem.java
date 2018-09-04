@@ -1,6 +1,10 @@
 package com.example.douglas.myfridgeapp.domain;
 
-public class FridgeItem {
+import com.bignerdranch.expandablerecyclerview.model.Parent;
+
+import java.util.List;
+
+public class FridgeItem implements Parent<ItemOptions>{
 
     private String Id;
     private String name;
@@ -8,6 +12,13 @@ public class FridgeItem {
     private String validUntilDate;
     private String isActive;
     private String status;
+
+    private List<ItemOptions> mItemOptions;
+
+
+    public FridgeItem(List<ItemOptions> itemOptions){
+        mItemOptions = itemOptions;
+    };
 
     public String getName() {
         return name;
@@ -51,5 +62,16 @@ public class FridgeItem {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    @Override
+    public List<ItemOptions> getChildList() {
+        return mItemOptions;
+    }
+
+    @Override
+    public boolean isInitiallyExpanded() {
+        return false;
     }
 }
