@@ -1,10 +1,12 @@
 package com.example.douglas.myfridgeapp.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.douglas.myfridgeapp.R;
@@ -16,21 +18,30 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     private List<FridgeItem> mDataset;
     private int mExpandedPosition = -1;
 
+    private final String ADDED_ON = "Added on: ";
+    private final String EXPIRE_DATE = "Expire date: ";
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         CardView mCardView;
         TextView fridgeItem;
-        TextView itemOptions;
-        //public TextView mTextView;
-        public MyViewHolder(View itemView) {
+        TextView startDate;
+
+        TextView expire_date;
+        ImageButton deleteButton;
+        ImageButton editButton;
+
+        MyViewHolder(View itemView) {
             super(itemView);
             mCardView = itemView.findViewById(R.id.card_view);
             fridgeItem = itemView.findViewById(R.id.fridge_item);
-            itemOptions = itemView.findViewById(R.id.item_options);
-            //mTextView = v;
+            startDate = itemView.findViewById(R.id.start_date);
+
+            expire_date = itemView.findViewById(R.id.expire_date);
+            deleteButton = itemView.findViewById(R.id.delete_btn);
+            editButton = itemView.findViewById(R.id.edit_btn);
         }
     }
 
@@ -40,8 +51,9 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
-    public FridgeListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FridgeListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_main, parent, false);
@@ -51,15 +63,21 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        String startDate = ADDED_ON + mDataset.get(position).getStartDate();
+        String expireDate = EXPIRE_DATE + mDataset.get(position).getValidUntilDate();
+
         holder.fridgeItem.setText(mDataset.get(position).getName());
-        holder.itemOptions.setText(mDataset.get(position).getValidUntilDate());
+        holder.startDate.setText(startDate);
+        holder.expire_date.setText(expireDate);
 
         // Expand/collapse items
         final boolean isExpanded = position==mExpandedPosition;
-        holder.itemOptions.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.deleteButton.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.editButton.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.startDate.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.itemView.setActivated(isExpanded);
         holder.itemView.setOnClickListener(v -> {
             mExpandedPosition = isExpanded ? -1:position;
@@ -74,7 +92,7 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 

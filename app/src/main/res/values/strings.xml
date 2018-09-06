@@ -10,4 +10,7 @@
     <string name="valid_for">Valid for</string>
     <string name="days">Days</string>
     <string name="number_of_days_hint">10</string>
+    <string name="added_on">Added on: </string>
+    <string name="expires_on">Expire on: </string>
+    <string name="delete_btn">Button to delete an Item</string>
 </resources>

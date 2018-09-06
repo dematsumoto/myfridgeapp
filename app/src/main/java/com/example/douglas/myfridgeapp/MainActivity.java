@@ -3,6 +3,7 @@ package com.example.douglas.myfridgeapp;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,10 +23,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements Callback<List<FridgeItem>> {
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,25 +64,25 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
     }
 
     @Override
-    public void onResponse(Call<List<FridgeItem>> call, Response<List<FridgeItem>> response) {
+    public void onResponse(@NonNull Call<List<FridgeItem>> call, @NonNull Response<List<FridgeItem>> response) {
         //findViewById(R.id.progress_loader).setVisibility(View.GONE);
-        mRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new FridgeListAdapter(response.body());
+        RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
         mRecyclerView.setAdapter(mAdapter);
 
     }
 
     @Override
-    public void onFailure(Call<List<FridgeItem>> call, Throwable t) {
+    public void onFailure(@NonNull Call<List<FridgeItem>> call, Throwable t) {
         t.printStackTrace();
     }
 }
