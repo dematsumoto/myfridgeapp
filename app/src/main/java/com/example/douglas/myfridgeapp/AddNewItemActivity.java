@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.example.douglas.myfridgeapp.util.DatePickerFragment;
 
+import java.util.Objects;
+
 
 public class AddNewItemActivity extends AppCompatActivity {
 
@@ -16,7 +18,7 @@ public class AddNewItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_item);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }
 

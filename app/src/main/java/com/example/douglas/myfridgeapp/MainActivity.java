@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +16,6 @@ import com.example.douglas.myfridgeapp.domain.FridgeItem;
 import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,16 +31,13 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), AddNewItemActivity.class);
-                startActivity(intent,  ActivityOptions.makeBasic().toBundle());
-            }
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(getBaseContext(), AddNewItemActivity.class);
+            startActivity(intent,  ActivityOptions.makeBasic().toBundle());
         });
 
         ApiClient.getServices().getAllItems().enqueue(this);
@@ -64,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         }
 
         if (id == R.id.menu_refresh) {
-            findViewById(R.id.progress_loader).setVisibility(View.VISIBLE);
+            //findViewById(R.id.progress_loader).setVisibility(View.VISIBLE);
             ApiClient.getServices().getAllItems().enqueue(this);
         }
 
@@ -73,13 +68,8 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
 
     @Override
     public void onResponse(Call<List<FridgeItem>> call, Response<List<FridgeItem>> response) {
-        findViewById(R.id.progress_loader).setVisibility(View.GONE);
-
-        List<String> itemNameList= response.body().stream()
-                .map(FridgeItem::getName)
-                .collect(Collectors.toList());
-
-        mRecyclerView = findViewById(R.id.recyclerView);
+        //findViewById(R.id.progress_loader).setVisibility(View.GONE);
+        mRecyclerView = findViewById(R.id.recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -89,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new FridgeListAdapter(itemNameList);
+        mAdapter = new FridgeListAdapter(response.body());
         mRecyclerView.setAdapter(mAdapter);
 
     }
