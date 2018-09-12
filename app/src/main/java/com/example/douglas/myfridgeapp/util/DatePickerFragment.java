@@ -2,7 +2,6 @@ package com.example.douglas.myfridgeapp.util;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
@@ -10,21 +9,25 @@ import android.widget.EditText;
 
 import com.example.douglas.myfridgeapp.R;
 
-import java.util.Calendar;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
-    private Calendar c;
+    private DateTime date;
+    private DateTime setDate;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
-        c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        date = new DateTime();
+        int year = date.getYear();
+        int month = date.getMonthOfYear();
+        int day = date.getDayOfMonth();
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
@@ -32,15 +35,14 @@ public class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        c.set(year, month, day);
+        setDate = new DateTime().withDate(year, month, day);
         EditText editText = getActivity().findViewById(R.id.start_date_field);
         editText.setText(dateSetToString());
     }
 
     private String dateSetToString() {
-        String myFormat = DATE_FORMAT;
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
-        return sdf.format(c.getTime());
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_FORMAT);
+        return setDate.toString(fmt);
     }
 
 }

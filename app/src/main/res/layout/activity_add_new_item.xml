@@ -39,7 +39,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="108dp"
         android:backgroundTint="@android:color/holo_green_light"
-        android:onClick="showSubmitionToast"
+        android:onClick="submitNewItem"
         android:text="@string/add_to_fridge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/valid_days_number_field"
         android:layout_width="79dp"
         android:layout_height="64dp"
         android:layout_marginStart="40dp"
@@ -94,7 +94,7 @@
         android:gravity="center"
         android:text="@string/days"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/editText2"
+        app:layout_constraintStart_toEndOf="@+id/valid_days_number_field"
         app:layout_constraintTop_toBottomOf="@+id/calendar_start_ic" />
 
 

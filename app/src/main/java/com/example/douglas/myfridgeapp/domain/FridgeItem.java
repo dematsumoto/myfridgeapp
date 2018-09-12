@@ -6,8 +6,15 @@ public class FridgeItem {
     private String name;
     private String startDate;
     private String validUntilDate;
-    private String isActive;
+    private String active;
     private String status;
+
+    public FridgeItem(String name, String startDate, String validUntilDate, String active) {
+        this.name = name;
+        this.startDate = startDate;
+        this.validUntilDate = validUntilDate;
+        this.active = active;
+    }
 
     public String getName() {
         return name;
@@ -37,12 +44,12 @@ public class FridgeItem {
         this.validUntilDate = validUntilDate;
     }
 
-    public String getIsActive() {
-        return isActive;
+    public String getActive() {
+        return active;
     }
 
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
+    public void setActive(String active) {
+        this.active = active;
     }
 
     public String getStatus() {
