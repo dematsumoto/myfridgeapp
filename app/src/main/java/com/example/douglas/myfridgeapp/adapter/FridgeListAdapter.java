@@ -57,8 +57,7 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_main, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

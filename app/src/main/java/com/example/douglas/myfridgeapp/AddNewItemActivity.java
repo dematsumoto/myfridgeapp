@@ -29,7 +29,6 @@ public class AddNewItemActivity extends AppCompatActivity implements Callback<Fr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_item);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
     }
 
     public void showDatePickerDialog(View v) {
@@ -56,12 +55,22 @@ public class AddNewItemActivity extends AppCompatActivity implements Callback<Fr
 
     @Override
     public void onResponse(Call<FridgeItem> call, Response<FridgeItem> response) {
-        Toast.makeText(getApplicationContext(), "Request Sent", Toast.LENGTH_SHORT).show();
+        int statusCode = response.code();
+        if (response.isSuccessful()){
+            Toast.makeText(getApplicationContext(), "Item successfully added!", Toast.LENGTH_SHORT).show();
+        }
+        else if(statusCode == 400){
+            Toast.makeText(getApplicationContext(), "[Bad Request]", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Something went wrong..", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     @Override
     public void onFailure(Call<FridgeItem> call, Throwable t) {
+        Toast.makeText(getApplicationContext(), "Something went wrong with the request", Toast.LENGTH_SHORT).show();
         t.printStackTrace();
     }
 }

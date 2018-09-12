@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.douglas.myfridgeapp.adapter.FridgeListAdapter;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
@@ -65,20 +66,24 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
 
     @Override
     public void onResponse(@NonNull Call<List<FridgeItem>> call, @NonNull Response<List<FridgeItem>> response) {
-        //findViewById(R.id.progress_loader).setVisibility(View.GONE);
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
+        if (!response.isSuccessful()){
+            Toast.makeText(getApplicationContext(), "Server Unavailable, try again later", Toast.LENGTH_LONG).show();
+        }
+        else {
+            //findViewById(R.id.progress_loader).setVisibility(View.GONE);
+            RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+            // use a linear layout manager
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
-        mRecyclerView.setAdapter(mAdapter);
-
+            RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override
