@@ -66,10 +66,11 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
 
     @Override
     public void onResponse(@NonNull Call<List<FridgeItem>> call, @NonNull Response<List<FridgeItem>> response) {
-        if (!response.isSuccessful()){
-            Toast.makeText(getApplicationContext(), "Server Unavailable, try again later", Toast.LENGTH_LONG).show();
-        }
-        else {
+        if (response.isSuccessful()){
+            if (response.body().isEmpty()){
+                Toast.makeText(getApplicationContext(), "Fridge is empty", Toast.LENGTH_LONG).show();
+                return;
+            }
             //findViewById(R.id.progress_loader).setVisibility(View.GONE);
             RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
@@ -83,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
 
             RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
             mRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Server Unavailable, try again later", Toast.LENGTH_LONG).show();
         }
     }
 
