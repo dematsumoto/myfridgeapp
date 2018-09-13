@@ -3,6 +3,7 @@ package com.example.douglas.myfridgeapp.util;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -18,13 +19,13 @@ public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
-    private DateTime date;
     private DateTime setDate;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
-        date = new DateTime();
+        DateTime date = new DateTime();
         int year = date.getYear();
         int month = date.getMonthOfYear();
         int day = date.getDayOfMonth();

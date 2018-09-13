@@ -3,23 +3,33 @@ package com.example.douglas.myfridgeapp.adapter;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.douglas.myfridgeapp.MainActivity;
 import com.example.douglas.myfridgeapp.R;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
+import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
 
+import java.io.IOException;
 import java.util.List;
 
-public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.MyViewHolder> {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.MyViewHolder>{
     private List<FridgeItem> mDataset;
     private int mExpandedPosition = -1;
 
     private final String ADDED_ON = "Added on: ";
     private final String EXPIRE_DATE = "Expire date: ";
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -81,6 +91,13 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
         holder.itemView.setOnClickListener(v -> {
             mExpandedPosition = isExpanded ? -1:position;
             notifyItemChanged(position);
+        });
+
+
+        holder.deleteButton.setOnClickListener(v -> {
+            String itemId =  mDataset.get(position).getId();
+            Log.v("delete_button", "delete button refer to id: " + itemId);
+            MainActivity.deleteItem(holder.itemView.getContext(), itemId);
         });
     }
 

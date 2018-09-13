@@ -2,7 +2,7 @@ package com.example.douglas.myfridgeapp.domain;
 
 public class FridgeItem {
 
-    private String Id;
+    private String id;
     private String name;
     private String startDate;
     private String validUntilDate;
@@ -25,7 +25,7 @@ public class FridgeItem {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public String getStartDate() {

@@ -6,9 +6,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface FridgeapiService {
 
@@ -18,4 +20,7 @@ public interface FridgeapiService {
     @Headers("Content-Type: application/json")
     @POST("fridge/addItem")
     Call<FridgeItem> addNewItem(@Body FridgeItem fridgeItem);
+
+    @DELETE("fridge/item/{id}/delete")
+    Call<FridgeItem> deleteItem(@Path("id") String id);
 }

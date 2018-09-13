@@ -68,7 +68,6 @@ public class AddNewItemActivity extends AppCompatActivity implements Callback<Fr
             startDateEditText.setError(null);
         }
 
-
         if (validForEditText.getText().toString().trim().equalsIgnoreCase("")) {
             validForEditText.setError("This field can not be blank");
             return false;

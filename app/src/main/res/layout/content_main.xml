@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
+        app:cardBackgroundColor="#f4f4f3"
         app:cardCornerRadius="4dp"
         app:cardUseCompatPadding="true">
 
@@ -28,7 +29,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/delete_btn"
                 android:backgroundTint="@android:color/holo_blue_dark"
-                android:contentDescription="@string/delete_btn"
+                android:contentDescription="@string/edit_btn"
                 app:srcCompat="@android:drawable/ic_menu_edit" />
 
             <ImageButton

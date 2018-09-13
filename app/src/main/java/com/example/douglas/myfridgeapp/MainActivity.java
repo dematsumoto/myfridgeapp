@@ -1,6 +1,7 @@
 package com.example.douglas.myfridgeapp;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements Callback<List<FridgeItem>> {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,10 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(getBaseContext(), AddNewItemActivity.class);
-            startActivity(intent,  ActivityOptions.makeBasic().toBundle());
+            startActivity(intent, ActivityOptions.makeBasic().toBundle());
         });
 
-        ApiClient.getServices().getAllItems().enqueue(this);
+        getAllItems();
     }
 
     @Override
@@ -57,42 +59,62 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fri
         }
 
         if (id == R.id.menu_refresh) {
+            getAllItems();
             //findViewById(R.id.progress_loader).setVisibility(View.VISIBLE);
-            ApiClient.getServices().getAllItems().enqueue(this);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onResponse(@NonNull Call<List<FridgeItem>> call, @NonNull Response<List<FridgeItem>> response) {
-        if (response.isSuccessful()){
-            if (response.body().isEmpty()){
-                Toast.makeText(getApplicationContext(), "Fridge is empty", Toast.LENGTH_LONG).show();
-                return;
+    public void getAllItems() {
+        ApiClient.getServices().getAllItems().enqueue(new Callback<List<FridgeItem>>() {
+            @Override
+            public void onResponse(Call<List<FridgeItem>> call, Response<List<FridgeItem>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Fridge is empty", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    //findViewById(R.id.progress_loader).setVisibility(View.GONE);
+                    RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
+
+                    // use this setting to improve performance if you know that changes
+                    // in content do not change the layout size of the RecyclerView
+                    mRecyclerView.setHasFixedSize(true);
+
+                    // use a linear layout manager
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseContext());
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+
+                    RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Server Unavailable, try again later", Toast.LENGTH_LONG).show();
+                }
             }
-            //findViewById(R.id.progress_loader).setVisibility(View.GONE);
-            RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            mRecyclerView.setHasFixedSize(true);
-
-            // use a linear layout manager
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView.setLayoutManager(mLayoutManager);
-
-            RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Server Unavailable, try again later", Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void onFailure(Call<List<FridgeItem>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
-    @Override
-    public void onFailure(@NonNull Call<List<FridgeItem>> call, Throwable t) {
-        t.printStackTrace();
+    public static void deleteItem(Context context, String id){
+        ApiClient.getServices().deleteItem(id).enqueue(new Callback<FridgeItem>() {
+            @Override
+            public void onResponse(Call<FridgeItem> call, Response<FridgeItem> response) {
+                if (response.isSuccessful()){
+                    Log.v("delete_request", "delete successful! id: " + id);
+                    Toast.makeText(context, "Item removed! Please Refresh", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FridgeItem> call, Throwable t) {
+
+            }
+        });
     }
 }
 
