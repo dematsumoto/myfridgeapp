@@ -9,19 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.douglas.myfridgeapp.MainActivity;
 import com.example.douglas.myfridgeapp.R;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
-import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
-
-import java.io.IOException;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.MyViewHolder>{
     private List<FridgeItem> mDataset;
@@ -34,7 +26,6 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         CardView mCardView;
         TextView fridgeItem;
         TextView startDate;
@@ -98,6 +89,8 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
             String itemId =  mDataset.get(position).getId();
             Log.v("delete_button", "delete button refer to id: " + itemId);
             MainActivity.deleteItem(holder.itemView.getContext(), itemId);
+            mDataset.remove(position);
+            notifyDataSetChanged();
         });
     }
 

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public void getAllItems() {
         ApiClient.getServices().getAllItems().enqueue(new Callback<List<FridgeItem>>() {
             @Override
-            public void onResponse(Call<List<FridgeItem>> call, Response<List<FridgeItem>> response) {
+            public void onResponse(@NonNull Call<List<FridgeItem>> call, @NonNull Response<List<FridgeItem>> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Fridge is empty", Toast.LENGTH_LONG).show();
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // use this setting to improve performance if you know that changes
                     // in content do not change the layout size of the RecyclerView
-                    mRecyclerView.setHasFixedSize(true);
+                    mRecyclerView.setHasFixedSize(false);
 
                     // use a linear layout manager
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseContext());
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<FridgeItem>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<FridgeItem>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -103,16 +103,17 @@ public class MainActivity extends AppCompatActivity {
     public static void deleteItem(Context context, String id){
         ApiClient.getServices().deleteItem(id).enqueue(new Callback<FridgeItem>() {
             @Override
-            public void onResponse(Call<FridgeItem> call, Response<FridgeItem> response) {
+            public void onResponse(@NonNull Call<FridgeItem> call, @NonNull Response<FridgeItem> response) {
                 if (response.isSuccessful()){
                     Log.v("delete_request", "delete successful! id: " + id);
-                    Toast.makeText(context, "Item removed! Please Refresh", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Item removed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<FridgeItem> call, Throwable t) {
-
+            public void onFailure(@NonNull Call<FridgeItem> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(context, "Something went wrong while deleting", Toast.LENGTH_SHORT).show();
             }
         });
     }

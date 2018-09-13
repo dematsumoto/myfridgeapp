@@ -1,6 +1,7 @@
 package com.example.douglas.myfridgeapp;
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class AddNewItemActivity extends AppCompatActivity implements Callback<FridgeItem> {
+public class AddNewItemActivity extends AppCompatActivity {
 
     public static final String ACTIVE = "true";
 
@@ -49,7 +50,7 @@ public class AddNewItemActivity extends AppCompatActivity implements Callback<Fr
         if (isFormValid(nameEditText, startDateEditText, validForEditText)){
             String validUntilDate = DateTimeConverter.addDaysToDate(startDate, Integer.parseInt(validForDays));
             FridgeItem fridgeItem = new FridgeItem(itemName, startDate, validUntilDate, ACTIVE);
-            ApiClient.getServices().addNewItem(fridgeItem).enqueue(this);
+            addNewItem(fridgeItem);
         }
 
     }
@@ -76,21 +77,31 @@ public class AddNewItemActivity extends AppCompatActivity implements Callback<Fr
         return true;
     }
 
-    @Override
-    public void onResponse(Call<FridgeItem> call, Response<FridgeItem> response) {
-        int statusCode = response.code();
-        if (response.isSuccessful()){
-            Toast.makeText(getApplicationContext(), "Item successfully added!", Toast.LENGTH_SHORT).show();
-            cleanFields();
-        }
-        else if(statusCode == 400){
-            Toast.makeText(getApplicationContext(), "[Bad Request]", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Something went wrong..", Toast.LENGTH_SHORT).show();
-        }
+    public void addNewItem(FridgeItem fridgeItem){
+        ApiClient.getServices().addNewItem(fridgeItem).enqueue(new Callback<FridgeItem>() {
+            @Override
+            public void onResponse(@NonNull Call<FridgeItem> call, @NonNull Response<FridgeItem> response) {
+                int statusCode = response.code();
+                if (response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Item successfully added!", Toast.LENGTH_SHORT).show();
+                    cleanFields();
+                }
+                else if(statusCode == 400){
+                    Toast.makeText(getApplicationContext(), "[Bad Request]", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Something went wrong..", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(@NonNull Call<FridgeItem> call, @NonNull Throwable t) {
+                Toast.makeText(getApplicationContext(), "Something went wrong with the request", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
     }
+
 
     private void cleanFields() {
         EditText nameEditText = findViewById(R.id.item_name);
@@ -100,11 +111,5 @@ public class AddNewItemActivity extends AppCompatActivity implements Callback<Fr
         nameEditText.getText().clear();
         startDateEditText.getText().clear();
         validForEditText.getText().clear();
-    }
-
-    @Override
-    public void onFailure(Call<FridgeItem> call, Throwable t) {
-        Toast.makeText(getApplicationContext(), "Something went wrong with the request", Toast.LENGTH_SHORT).show();
-        t.printStackTrace();
     }
 }
