@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -105,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<FridgeItem> call, @NonNull Response<FridgeItem> response) {
                 if (response.isSuccessful()){
-                    Log.v("delete_request", "delete successful! id: " + id);
                     Toast.makeText(context, "Item removed!", Toast.LENGTH_SHORT).show();
                 }
             }

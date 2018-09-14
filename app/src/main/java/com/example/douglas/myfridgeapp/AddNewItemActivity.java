@@ -13,8 +13,10 @@ import com.example.douglas.myfridgeapp.domain.FridgeItem;
 import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
 import com.example.douglas.myfridgeapp.util.DatePickerFragment;
 import com.example.douglas.myfridgeapp.util.DateTimeConverter;
+import com.example.douglas.myfridgeapp.util.FormValidator;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,48 +35,27 @@ public class AddNewItemActivity extends AppCompatActivity {
     }
 
     public void showDatePickerDialog(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("DATE", getResources().getResourceEntryName(v.getId()));
         DialogFragment newFragment = new DatePickerFragment();
+        newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     public void submitNewItem(View v){
-
-        EditText nameEditText = findViewById(R.id.item_name);
-        EditText startDateEditText = findViewById(R.id.start_date_field);
+        EditText nameEditText = findViewById(R.id.add_item_name_field);
+        EditText startDateEditText = findViewById(R.id.add_start_date_field);
         EditText validForEditText = findViewById(R.id.valid_days_number_field);
 
         String itemName = nameEditText.getText().toString();
         String startDate = startDateEditText.getText().toString();
         String validForDays = validForEditText.getText().toString();
 
-        if (isFormValid(nameEditText, startDateEditText, validForEditText)){
+        if (FormValidator.isFormFilled(nameEditText, startDateEditText, validForEditText)){
             String validUntilDate = DateTimeConverter.addDaysToDate(startDate, Integer.parseInt(validForDays));
             FridgeItem fridgeItem = new FridgeItem(itemName, startDate, validUntilDate, ACTIVE);
             addNewItem(fridgeItem);
         }
-
-    }
-
-    private boolean isFormValid(EditText nameEditText, EditText startDateEditText, EditText validForEditText) {
-        if (nameEditText.getText().toString().trim().equalsIgnoreCase("")) {
-            nameEditText.setError("This field can not be blank");
-            return false;
-        }
-
-        if (startDateEditText.getText().toString().trim().equalsIgnoreCase("")) {
-            startDateEditText.setError("This field can not be blank");
-            return  false;
-        }
-        else {
-            startDateEditText.setError(null);
-        }
-
-        if (validForEditText.getText().toString().trim().equalsIgnoreCase("")) {
-            validForEditText.setError("This field can not be blank");
-            return false;
-        }
-
-        return true;
     }
 
     public void addNewItem(FridgeItem fridgeItem){
@@ -102,14 +83,12 @@ public class AddNewItemActivity extends AppCompatActivity {
         });
     }
 
-
     private void cleanFields() {
-        EditText nameEditText = findViewById(R.id.item_name);
-        EditText startDateEditText = findViewById(R.id.start_date_field);
+        EditText nameEditText = findViewById(R.id.add_item_name_field);
+        EditText startDateEditText = findViewById(R.id.add_start_date_field);
         EditText validForEditText = findViewById(R.id.valid_days_number_field);
 
-        nameEditText.getText().clear();
-        startDateEditText.getText().clear();
-        validForEditText.getText().clear();
+        Stream.of(nameEditText, startDateEditText, validForEditText)
+                .forEach(f -> f.getText().clear());
     }
 }

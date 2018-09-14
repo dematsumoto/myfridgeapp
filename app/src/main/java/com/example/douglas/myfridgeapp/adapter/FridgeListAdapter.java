@@ -1,18 +1,22 @@
 package com.example.douglas.myfridgeapp.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.douglas.myfridgeapp.EditItemActivity;
 import com.example.douglas.myfridgeapp.MainActivity;
 import com.example.douglas.myfridgeapp.R;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
+import com.google.gson.Gson;
+
 import java.util.List;
 
 public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.MyViewHolder>{
@@ -72,7 +76,6 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
         holder.fridgeItem.setText(mDataset.get(position).getName());
         holder.startDate.setText(startDate);
         holder.expire_date.setText(expireDate);
-
         // Expand/collapse items
         final boolean isExpanded = position==mExpandedPosition;
         holder.deleteButton.setVisibility(isExpanded?View.VISIBLE:View.GONE);
@@ -84,14 +87,8 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
             notifyItemChanged(position);
         });
 
-
-        holder.deleteButton.setOnClickListener(v -> {
-            String itemId =  mDataset.get(position).getId();
-            Log.v("delete_button", "delete button refer to id: " + itemId);
-            MainActivity.deleteItem(holder.itemView.getContext(), itemId);
-            mDataset.remove(position);
-            notifyDataSetChanged();
-        });
+        handleDeleteButton(holder, position);
+        handleEditButton(holder, position);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -103,6 +100,27 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    private void handleDeleteButton(@NonNull MyViewHolder holder, int position) {
+        holder.deleteButton.setOnClickListener(v -> {
+            String itemId =  mDataset.get(position).getId();
+            MainActivity.deleteItem(holder.itemView.getContext(), itemId);
+            mDataset.remove(position);
+            notifyDataSetChanged();
+        });
+    }
+
+    private void handleEditButton(@NonNull MyViewHolder holder, int position) {
+        holder.editButton.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            Intent intent = new Intent(context, EditItemActivity.class);
+
+            Gson gson = new Gson();
+            intent.putExtra("item", gson.toJson(mDataset.get(position)));
+            context.startActivity(intent);
+            //notifyDataSetChanged();
+        });
     }
 
 }

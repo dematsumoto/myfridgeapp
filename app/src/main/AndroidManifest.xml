@@ -25,9 +25,11 @@
         <activity
             android:name=".AddNewItemActivity"
             android:label="New Item"
-            android:parentActivityName=".MainActivity"
-            >
-        </activity>
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".EditItemActivity"
+            android:label="Edit Item"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

@@ -7,19 +7,19 @@
     tools:context=".AddNewItemActivity">
 
     <EditText
-        android:id="@+id/item_name"
+        android:id="@+id/add_item_name_field"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="@string/name_input"
-        android:inputType="textPersonName"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/start_date_field"
+        android:id="@+id/add_start_date_field"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
@@ -30,7 +30,7 @@
         android:inputType="date"
         android:onClick="showDatePickerDialog"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+        app:layout_constraintTop_toBottomOf="@+id/add_item_name_field" />
 
     <Button
         android:id="@+id/add_item_btn"
@@ -57,8 +57,8 @@
         android:contentDescription="@string/date_picker"
         android:onClick="showDatePickerDialog"
         android:src="@android:drawable/ic_menu_my_calendar"
-        app:layout_constraintStart_toEndOf="@+id/start_date_field"
-        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+        app:layout_constraintStart_toEndOf="@+id/add_start_date_field"
+        app:layout_constraintTop_toBottomOf="@+id/add_item_name_field" />
 
     <EditText
         android:id="@+id/valid_days_number_field"
@@ -71,7 +71,7 @@
         android:hint="@string/number_of_days_hint"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/valid_for_text"
-        app:layout_constraintTop_toBottomOf="@+id/start_date_field" />
+        app:layout_constraintTop_toBottomOf="@+id/add_start_date_field" />
 
     <TextView
         android:id="@+id/valid_for_text"
@@ -83,7 +83,7 @@
         android:text="@string/valid_for"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_date_field" />
+        app:layout_constraintTop_toBottomOf="@+id/add_start_date_field" />
 
     <TextView
         android:id="@+id/days"
