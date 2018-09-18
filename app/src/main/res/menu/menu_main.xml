@@ -12,4 +12,10 @@
         android:orderInCategory="101"
         app:showAsAction="never"
         android:title="@string/menu_refresh"/>
+    <item
+        android:id="@+id/help"
+        android:title="@string/menu_help"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_menu_help_outline_d"/>
+
 </menu>

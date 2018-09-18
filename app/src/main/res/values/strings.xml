@@ -15,4 +15,5 @@
     <string name="delete_btn">Button to delete an Item</string>
     <string name="edit_btn">Button to edit an Item</string>
     <string name="save_changes">Save Changes</string>
+    <string name="menu_help">Help</string>
 </resources>
