@@ -1,4 +1,4 @@
-package com.example.douglas.myfridgeapp;
+package com.example.douglas.myfridgeapp.activity;
 
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.douglas.myfridgeapp.R;
 import com.example.douglas.myfridgeapp.adapter.FridgeListAdapter;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
+import com.example.douglas.myfridgeapp.fragment.HowToUseDialogFragment;
 import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
 
 import java.util.List;
@@ -44,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -60,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_refresh) {
             getAllItems();
             //findViewById(R.id.progress_loader).setVisibility(View.VISIBLE);
+        }
+
+        if (id == R.id.how_to_action){
+            showHelpDialog();
         }
 
         return super.onOptionsItemSelected(item);
@@ -120,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context, "Something went wrong while deleting", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void showHelpDialog(){
+        DialogFragment helpDialog = new HowToUseDialogFragment();
+        helpDialog.show(getSupportFragmentManager(), "how to");
     }
 }
 

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,13 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddNewItemActivity"
+            android:name=".activity.AddNewItemActivity"
             android:label="New Item"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".EditItemActivity"
+            android:name=".activity.EditItemActivity"
             android:label="Edit Item"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activity.MainActivity" />
     </application>
 
 </manifest>

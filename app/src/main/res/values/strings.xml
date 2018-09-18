@@ -16,4 +16,7 @@
     <string name="edit_btn">Button to edit an Item</string>
     <string name="save_changes">Save Changes</string>
     <string name="menu_help">Help</string>
+    <string name="how_to_use_description">Tap on the + to add new items. To delete or change an item, tap over it to see the options.</string>
+    <string name="got_it">Got it!</string>
+    <string name="how_to_title">How to use this App?</string>
 </resources>

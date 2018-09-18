@@ -1,4 +1,4 @@
-package com.example.douglas.myfridgeapp.util;
+package com.example.douglas.myfridgeapp.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

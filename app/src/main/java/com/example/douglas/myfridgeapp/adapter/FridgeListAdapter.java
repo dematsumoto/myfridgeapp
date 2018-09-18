@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.douglas.myfridgeapp.EditItemActivity;
-import com.example.douglas.myfridgeapp.MainActivity;
+import com.example.douglas.myfridgeapp.activity.EditItemActivity;
+import com.example.douglas.myfridgeapp.activity.MainActivity;
 import com.example.douglas.myfridgeapp.R;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
 import com.google.gson.Gson;

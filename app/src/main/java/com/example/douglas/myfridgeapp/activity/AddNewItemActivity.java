@@ -1,4 +1,4 @@
-package com.example.douglas.myfridgeapp;
+package com.example.douglas.myfridgeapp.activity;
 
 
 import android.support.annotation.NonNull;
@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.douglas.myfridgeapp.R;
 import com.example.douglas.myfridgeapp.domain.FridgeItem;
 import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
-import com.example.douglas.myfridgeapp.util.DatePickerFragment;
+import com.example.douglas.myfridgeapp.fragment.DatePickerFragment;
 import com.example.douglas.myfridgeapp.util.DateTimeConverter;
 import com.example.douglas.myfridgeapp.util.FormValidator;
 

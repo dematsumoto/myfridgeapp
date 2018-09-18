@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.douglas.myfridgeapp.MainActivity">
+    tools:context="com.example.douglas.myfridgeapp.activity.MainActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -13,7 +13,7 @@
         app:showAsAction="never"
         android:title="@string/menu_refresh"/>
     <item
-        android:id="@+id/help"
+        android:id="@+id/how_to_action"
         android:title="@string/menu_help"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_help_outline_d"/>
