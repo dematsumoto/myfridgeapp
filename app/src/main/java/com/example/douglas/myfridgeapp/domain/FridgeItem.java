@@ -16,6 +16,14 @@ public class FridgeItem {
         this.active = active;
     }
 
+    public FridgeItem(String id, String name, String startDate, String validUntilDate, String active) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.validUntilDate = validUntilDate;
+        this.active = active;
+    }
+
     public String getName() {
         return name;
     }

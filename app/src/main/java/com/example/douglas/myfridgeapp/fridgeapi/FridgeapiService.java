@@ -23,4 +23,8 @@ public interface FridgeapiService {
 
     @DELETE("fridge/item/{id}/delete")
     Call<FridgeItem> deleteItem(@Path("id") String id);
+
+    @Headers("Content-Type: application/json")
+    @POST("fridge/update")
+    Call<FridgeItem> updateItem(@Body FridgeItem fridgeItem);
 }
