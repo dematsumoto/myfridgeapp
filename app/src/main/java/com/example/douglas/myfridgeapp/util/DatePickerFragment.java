@@ -44,7 +44,7 @@ public class DatePickerFragment extends DialogFragment
         // Use the current date as the default date in the picker
         DateTime date = new DateTime();
         int year = date.getYear();
-        int month = date.getMonthOfYear();
+        int month = date.getMonthOfYear() - 1;
         int day = date.getDayOfMonth();
 
         // Create a new instance of DatePickerDialog and return it
