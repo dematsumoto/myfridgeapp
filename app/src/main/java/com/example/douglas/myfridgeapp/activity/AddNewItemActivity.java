@@ -67,6 +67,7 @@ public class AddNewItemActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Toast.makeText(getApplicationContext(), "Item successfully added!", Toast.LENGTH_SHORT).show();
                     cleanFields();
+                    findViewById(R.id.return_to_fridge_btn).setVisibility(View.VISIBLE);
                 }
                 else if(statusCode == 400){
                     Toast.makeText(getApplicationContext(), "[Bad Request]", Toast.LENGTH_SHORT).show();
@@ -91,5 +92,9 @@ public class AddNewItemActivity extends AppCompatActivity {
 
         Stream.of(nameEditText, startDateEditText, validForEditText)
                 .forEach(f -> f.getText().clear());
+    }
+
+    public void returnToFridge(View view){
+        finish();
     }
 }
