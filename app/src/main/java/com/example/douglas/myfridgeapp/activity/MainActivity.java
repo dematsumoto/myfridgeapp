@@ -21,6 +21,7 @@ import com.example.douglas.myfridgeapp.domain.FridgeItem;
 import com.example.douglas.myfridgeapp.fragment.HowToUseDialogFragment;
 import com.example.douglas.myfridgeapp.fridgeapi.ApiClient;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -107,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<List<FridgeItem>> call, Throwable t) {
                 t.printStackTrace();
+                if(t instanceof SocketTimeoutException){
+                    Toast.makeText(getApplicationContext(), "Server Timeout..Try again", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
