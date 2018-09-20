@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 t.printStackTrace();
                 if(t instanceof SocketTimeoutException){
                     Toast.makeText(getApplicationContext(), "Server Timeout..Try again", Toast.LENGTH_LONG).show();
+                    mySwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
