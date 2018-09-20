@@ -3,6 +3,7 @@ package com.example.douglas.myfridgeapp.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,11 +21,13 @@ import com.google.gson.Gson;
 import java.util.List;
 
 public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.MyViewHolder>{
+    public static final String EXPIRED_STATUS = "Expired";
+    public static final String GOOD_STATUS = "Good";
     private List<FridgeItem> mDataset;
     private int mExpandedPosition = -1;
 
     private final String ADDED_ON = "Added on: ";
-    private final String EXPIRE_DATE = "Expire date: ";
+    private final String EXPIRE_DATE = "Expire: ";
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -70,25 +73,30 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        String startDate = ADDED_ON + mDataset.get(position).getStartDate();
-        String expireDate = EXPIRE_DATE + mDataset.get(position).getValidUntilDate();
+        FridgeItem curItem = mDataset.get(position);
+        String startDate = ADDED_ON + curItem.getStartDate();
+        String expireDate = EXPIRE_DATE + curItem.getValidUntilDate();
 
-        holder.fridgeItem.setText(mDataset.get(position).getName());
+        holder.fridgeItem.setText(curItem.getName());
         holder.startDate.setText(startDate);
         holder.expire_date.setText(expireDate);
-        // Expand/collapse items
-        final boolean isExpanded = position==mExpandedPosition;
-        holder.deleteButton.setVisibility(isExpanded?View.VISIBLE:View.GONE);
-        holder.editButton.setVisibility(isExpanded?View.VISIBLE:View.GONE);
-        holder.startDate.setVisibility(isExpanded?View.VISIBLE:View.GONE);
-        holder.itemView.setActivated(isExpanded);
-        holder.itemView.setOnClickListener(v -> {
-            mExpandedPosition = isExpanded ? -1:position;
-            notifyItemChanged(position);
-        });
 
+        setCardColorByStatus(holder, curItem.getStatus());
+        handleExpandItem(holder, position);
         handleDeleteButton(holder, position);
         handleEditButton(holder, position);
+    }
+
+    private void setCardColorByStatus(@NonNull MyViewHolder holder, String status) {
+        if (EXPIRED_STATUS.equalsIgnoreCase(status)){
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.status_expired));
+        }
+        else if (GOOD_STATUS.equalsIgnoreCase(status)) {
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.status_good));
+        }
+        else {
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.status_expire_soon));
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -100,6 +108,19 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+
+    private void handleExpandItem(@NonNull MyViewHolder holder, int position) {
+        final boolean isExpanded = position==mExpandedPosition;
+        holder.deleteButton.setVisibility(isExpanded? View.VISIBLE:View.GONE);
+        holder.editButton.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.startDate.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.itemView.setActivated(isExpanded);
+        holder.itemView.setOnClickListener(v -> {
+            mExpandedPosition = isExpanded ? -1:position;
+            notifyItemChanged(position);
+        });
     }
 
     private void handleDeleteButton(@NonNull MyViewHolder holder, int position) {
@@ -119,7 +140,6 @@ public class FridgeListAdapter extends RecyclerView.Adapter<FridgeListAdapter.My
             Gson gson = new Gson();
             intent.putExtra("item", gson.toJson(mDataset.get(position)));
             context.startActivity(intent);
-            //notifyDataSetChanged();
         });
     }
 

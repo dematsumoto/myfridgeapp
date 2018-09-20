@@ -5,4 +5,7 @@
     <color name="colorAccent">#ff4081</color>
     <color name="darker_gray">#d2d1d1</color>
     <color name="my_gray">#ebeae9</color>
+    <color name="status_good">#AAD8BE</color>
+    <color name="status_expired">#F29876</color>
+    <color name="status_expire_soon">#F8D999</color>
 </resources>
