@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,12 +31,17 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    SwipeRefreshLayout mySwipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mySwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        mySwipeRefreshLayout.setOnRefreshListener(this::getAllItems);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
@@ -61,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.menu_refresh) {
+            mySwipeRefreshLayout.setRefreshing(true);
             getAllItems();
-            //findViewById(R.id.progress_loader).setVisibility(View.VISIBLE);
         }
 
         if (id == R.id.how_to_action){
@@ -87,11 +93,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Fridge is empty", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    //findViewById(R.id.progress_loader).setVisibility(View.GONE);
                     RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
-                    // use this setting to improve performance if you know that changes
-                    // in content do not change the layout size of the RecyclerView
                     mRecyclerView.setHasFixedSize(true);
 
                     // use a linear layout manager
@@ -100,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
                     RecyclerView.Adapter mAdapter = new FridgeListAdapter(response.body());
                     mRecyclerView.setAdapter(mAdapter);
+
+                    mySwipeRefreshLayout.setRefreshing(false);
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Server Unavailable, try again later", Toast.LENGTH_LONG).show();
                 }
@@ -137,5 +143,3 @@ public class MainActivity extends AppCompatActivity {
         helpDialog.show(getSupportFragmentManager(), "how to");
     }
 }
-
-
