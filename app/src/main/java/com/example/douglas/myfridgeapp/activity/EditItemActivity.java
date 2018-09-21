@@ -1,8 +1,10 @@
 package com.example.douglas.myfridgeapp.activity;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,8 @@ import com.example.douglas.myfridgeapp.fragment.DatePickerFragment;
 import com.example.douglas.myfridgeapp.util.FormValidator;
 import com.google.gson.Gson;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +34,9 @@ public class EditItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(
+                new ColorDrawable(ContextCompat.getColor(getBaseContext(), R.color.action_bar_color)));
 
         Gson gson = new Gson();
         FridgeItem item = gson.fromJson(getIntent().getStringExtra("item"), FridgeItem.class);
