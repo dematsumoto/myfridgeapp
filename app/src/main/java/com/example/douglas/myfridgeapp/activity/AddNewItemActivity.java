@@ -1,11 +1,14 @@
 package com.example.douglas.myfridgeapp.activity;
 
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -41,6 +44,8 @@ public class AddNewItemActivity extends AppCompatActivity {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "datePicker");
+
+        hideKeyboard(this);
     }
 
     public void submitNewItem(View v){
@@ -65,7 +70,9 @@ public class AddNewItemActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<FridgeItem> call, @NonNull Response<FridgeItem> response) {
                 int statusCode = response.code();
                 if (response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Item successfully added!", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Item successfully added!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0 ,128);
+                    toast.show();
                     cleanFields();
                     findViewById(R.id.return_to_fridge_btn).setVisibility(View.VISIBLE);
                 }
@@ -92,6 +99,17 @@ public class AddNewItemActivity extends AppCompatActivity {
 
         Stream.of(nameEditText, startDateEditText, validForEditText)
                 .forEach(f -> f.getText().clear());
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void returnToFridge(View view){
